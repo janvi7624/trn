@@ -1,169 +1,226 @@
-import { useState, useEffect } from "react";
+import { useRef, useEffect } from "react";
 
 export default function App() {
-  const [timeLeft, setTimeLeft] = useState({});
-  const [notified, setNotified] = useState(false);
-  const [email, setEmail] = useState("");
-
-  const targetDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+  const robotRef = useRef(null);
+  const rootRef = useRef(null);
+  const cur = useRef({ x: 0, y: 0 });
+  const tgt = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
-    const tick = () => {
-      const diff = targetDate - Date.now();
-      if (diff <= 0) return;
-      setTimeLeft({
-        days:  String(Math.floor(diff / 86400000)).padStart(2, "0"),
-        hours: String(Math.floor((diff % 86400000) / 3600000)).padStart(2, "0"),
-        mins:  String(Math.floor((diff % 3600000) / 60000)).padStart(2, "0"),
-        secs:  String(Math.floor((diff % 60000) / 1000)).padStart(2, "0"),
-      });
+    const el = rootRef.current;
+
+    const onMove = (e) => {
+      const r = el.getBoundingClientRect();
+      tgt.current = {
+        x: (((e.clientY - r.top) / r.height) * 2 - 1) * -10,
+        y: (((e.clientX - r.left) / r.width) * 2 - 1) * 10,
+      };
     };
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
+
+    const onLeave = () => {
+      tgt.current = { x: 0, y: 0 };
+    };
+
+    let raf;
+    const tick = () => {
+      cur.current.x += (tgt.current.x - cur.current.x) * 0.06;
+      cur.current.y += (tgt.current.y - cur.current.y) * 0.06;
+
+      if (robotRef.current) {
+        robotRef.current.style.transform = `perspective(800px) rotateX(${cur.current.x}deg) rotateY(${cur.current.y}deg)`;
+      }
+
+      raf = requestAnimationFrame(tick);
+    };
+
+    el.addEventListener("mousemove", onMove);
+    el.addEventListener("mouseleave", onLeave);
+    raf = requestAnimationFrame(tick);
+
+    return () => {
+      el.removeEventListener("mousemove", onMove);
+      el.removeEventListener("mouseleave", onLeave);
+      cancelAnimationFrame(raf);
+    };
   }, []);
 
-  const units = ["days", "hours", "mins", "secs"];
-
   return (
-    <div style={styles.wrapper}>
-      <div style={styles.blob1} />
-      <div style={styles.blob2} />
-      <div style={styles.radial} />
-
-      <div style={styles.spinner} />
-
-      <h1 style={{ ...styles.heading, animation: "fadeInUp 0.8s ease both 0.2s, flicker 6s ease-in-out infinite 2s" }}>
-        Coming Soon
-      </h1>
-
-      <p style={{ ...styles.sub, animation: "fadeInUp 0.8s ease both 0.4s" }}>
-        Something powerful is on its way. Stay tuned.
-      </p>
-
-      {/* <div style={{ ...styles.countdown, animation: "fadeInUp 0.8s ease both 0.6s" }}>
-        {units.map((unit) => (
-          <div key={unit} style={styles.tile}>
-            <span style={styles.number}>{timeLeft[unit] ?? "00"}</span>
-            <span style={styles.label}>{unit}</span>
-          </div>
-        ))}
-      </div>
-
-      <div style={{ ...styles.emailRow, animation: "fadeInUp 0.8s ease both 0.8s" }}>
-        <input
-          type="email"
-          placeholder="Enter your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={styles.input}
-        />
-        <button
-          style={notified ? { ...styles.button, background: "#501313" } : styles.button}
-          onClick={() => { if (email) setNotified(true); }}
-        >
-          {notified ? "✓ Noted!" : "Notify me"}
-        </button>
-      </div> */}
-
+    <>
       <style>{`
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(30px); }
+        @keyframes badgePulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.4; transform: scale(0.7); }
+        }
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(24px); }
           to   { opacity: 1; transform: translateY(0); }
         }
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to   { transform: rotate(360deg); }
-        }
-        @keyframes pulse {
-          0%, 100% { transform: scale(1); opacity: 1; }
-          50%       { transform: scale(1.08); opacity: 0.7; }
-        }
-        @keyframes glow {
-          0%, 100% { box-shadow: 0 0 0 0 rgba(226,75,74,0.5); }
-          50%       { box-shadow: 0 0 0 14px rgba(226,75,74,0); }
-        }
-        @keyframes flicker {
-          0%,100%{opacity:1} 92%{opacity:1} 93%{opacity:0.7}
-          95%{opacity:1} 97%{opacity:0.8} 98%{opacity:1}
-        }
+        .cs-badge    { animation: fadeUp 0.6s ease 0.1s both; }
+        .cs-heading  { animation: fadeUp 0.6s ease 0.25s both; }
+        .cs-divider  { animation: fadeUp 0.6s ease 0.35s both; }
+        .cs-sub      { animation: fadeUp 0.6s ease 0.45s both; }
+        .cs-dot      { animation: badgePulse 1.8s ease-in-out infinite; }
       `}</style>
-    </div>
+
+      <div ref={rootRef} style={styles.root}>
+
+        {/* Grid background */}
+        <div style={styles.gridBg} />
+
+        {/* Purple glow orb */}
+        <div style={styles.glowOrb} />
+
+        {/* Robot — parallax layer */}
+        <div ref={robotRef} style={styles.robotWrapper}>
+          <img src="/robot.png" alt="Robot" style={styles.robotImg} />
+        </div>
+
+        {/* Radial vignette */}
+        <div style={styles.vignette} />
+
+        {/* Scanlines */}
+        <div style={styles.scanlines} />
+
+        {/* Corner brackets */}
+        <div style={{ ...styles.corner, ...styles.cornerTL }} />
+        <div style={{ ...styles.corner, ...styles.cornerTR }} />
+        <div style={{ ...styles.corner, ...styles.cornerBL }} />
+        <div style={{ ...styles.corner, ...styles.cornerBR }} />
+
+        {/* Text content */}
+        <div style={styles.text}>
+          {/* Heading */}
+          <h1 className="cs-heading" style={styles.heading}>
+            Coming Soon
+          </h1>
+
+          {/* Divider */}
+          <div className="cs-divider" style={styles.divider} />
+
+          {/* Subtitle */}
+          <p className="cs-sub" style={styles.sub}>
+            Something powerful is on physical way.
+          </p>
+        </div>
+      </div>
+    </>
   );
 }
 
 const styles = {
-  wrapper: {
-    minHeight: "100vh",
-    background: "linear-gradient(135deg, #0a0a0a 0%, #1a0505 50%, #2d0808 100%)",
+  root: {
+    position: "relative",
+    height: "100vh",
+    overflow: "hidden",
+    background: "#080808",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontFamily: "system-ui, sans-serif",
+  },
+  gridBg: {
+    position: "absolute",
+    inset: 0,
+    backgroundImage: `
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)
+    `,
+    backgroundSize: "40px 40px",
+  },
+  glowOrb: {
+    position: "absolute",
+    width: "600px",
+    height: "600px",
+    borderRadius: "50%",
+    background: "radial-gradient(circle, rgba(255, 60, 60, 0.13) 0%, transparent 70%)",
+    pointerEvents: "none",
+  },
+  robotWrapper: {
+    position: "absolute",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  robotImg: {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    opacity: 0.4,
+  },
+  vignette: {
+    position: "absolute",
+    inset: 0,
+    background: "radial-gradient(ellipse at center, transparent 25%, #080808 80%)",
+  },
+  scanlines: {
+    position: "absolute",
+    inset: 0,
+    backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.05) 2px, rgba(0,0,0,0.05) 4px)",
+    pointerEvents: "none",
+    zIndex: 1,
+  },
+  corner: {
+    position: "absolute",
+    width: "22px",
+    height: "22px",
+    borderColor: "rgba(255, 60, 70, 0.4)",
+    borderStyle: "solid",
+  },
+  cornerTL: { top: "20px",  left: "20px",  borderWidth: "1px 0 0 1px" },
+  cornerTR: { top: "20px",  right: "20px", borderWidth: "1px 1px 0 0" },
+  cornerBL: { bottom: "20px", left: "20px",  borderWidth: "0 0 1px 1px" },
+  cornerBR: { bottom: "20px", right: "20px", borderWidth: "0 1px 1px 0" },
+  text: {
+    position: "relative",
+    zIndex: 2,
+    textAlign: "center",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
-    padding: "3rem 2rem",
-    position: "relative",
-    overflow: "hidden",
-    fontFamily: "sans-serif",
+    gap: "18px",
   },
-  blob1: {
-    position: "absolute", top: -80, right: -80,
-    width: 300, height: 300, borderRadius: "50%",
-    background: "rgba(226,75,74,0.08)",
-    animation: "pulse 4s ease-in-out infinite",
+  badge: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "7px",
+    background: "rgba(255, 60, 60, 0.15)",
+    border: "0.5px solid rgba(255, 60, 60, 0.45)",
+    borderRadius: "99px",
+    padding: "5px 14px",
+    fontSize: "11px",
+    fontWeight: 500,
+    letterSpacing: "0.1em",
+    color: "#ff9090",
+    textTransform: "uppercase",
   },
-  blob2: {
-    position: "absolute", bottom: -100, left: -60,
-    width: 360, height: 360, borderRadius: "50%",
-    background: "rgba(163,45,45,0.06)",
-    animation: "pulse 5.5s ease-in-out infinite 1.2s",
-  },
-  radial: {
-    position: "absolute", top: "50%", left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 500, height: 500, borderRadius: "50%",
-    background: "radial-gradient(circle, rgba(163,45,45,0.07) 0%, transparent 70%)",
-    pointerEvents: "none",
-  },
-  spinner: {
-    width: 152, height: 152, borderRadius: "50%",
-    border: "2.5px solid rgba(240,149,149,0.2)",
-    borderTopColor: "#E24B4A",
-    animation: "spin 1.6s linear infinite",
-    marginBottom: "2rem",
+  badgeDot: {
+    width: "6px",
+    height: "6px",
+    borderRadius: "50%",
+    background: "#ff5a5d",
+    display: "inline-block",
   },
   heading: {
-    fontSize: 150, fontWeight: 700, color: "#FCEBEB",
-    margin: "0 0 0.5rem", letterSpacing: -1,
-    textAlign: "center", opacity: 0,
+    fontSize: "clamp(3rem, 8vw, 8rem)",
+    fontWeight: 900,
+    letterSpacing: "-0.02em",
+    lineHeight: 1,
+    margin: 0,
+    background: "linear-gradient(135deg, #ffffff 0%, #a5666f 100%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    backgroundClip: "text",
+  },
+  divider: {
+    width: "44px",
+    height: "1px",
+    background: "linear-gradient(90deg, transparent, #b03a2e, transparent)",
   },
   sub: {
-    fontSize: 50, color: "#F09595", margin: "0 0 2.5rem",
-    textAlign: "center", maxWidth: 800, lineHeight: 1.75, opacity: 0,
-  },
-  countdown: {
-    display: "flex", gap: 10, marginBottom: "2.5rem", opacity: 0,
-  },
-  tile: {
-    display: "flex", flexDirection: "column", alignItems: "center",
-    background: "rgba(255,255,255,0.04)",
-    border: "0.5px solid rgba(226,75,74,0.35)",
-    borderRadius: 8, padding: "14px 18px", minWidth: 62,
-  },
-  number: { fontSize: 28, fontWeight: 500, color: "#FCEBEB" },
-  label:  { fontSize: 11, color: "#A32D2D", marginTop: 4, letterSpacing: 1, textTransform: "uppercase" },
-  emailRow: {
-    display: "flex", gap: 8, alignItems: "center", opacity: 0,
-  },
-  input: {
-    background: "rgba(255,255,255,0.06)",
-    border: "0.5px solid rgba(226,75,74,0.4)",
-    color: "#FCEBEB", borderRadius: 8, padding: "10px 16px",
-    fontSize: 14, width: 196, outline: "none",
-  },
-  button: {
-    background: "#A32D2D", border: "none", color: "#FCEBEB",
-    borderRadius: 8, padding: "10px 20px", fontSize: 14,
-    cursor: "pointer", fontWeight: 500,
-    animation: "glow 2.5s ease-in-out infinite",
+    fontSize: "clamp(0.9rem, 2.5vw, 1.2rem)",
+    color: "#a28181",
+    margin: 0,
+    letterSpacing: "0.08em",
+    fontWeight: 400,
   },
 };
