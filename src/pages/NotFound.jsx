@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { HiOutlineArrowLeft } from 'react-icons/hi2';
+import { HiOutlineArrowLeft, HiOutlineArrowRight } from 'react-icons/hi2';
 import PageTransition from '../components/PageTransition.jsx';
 
 export default function NotFound() {
@@ -13,16 +13,22 @@ export default function NotFound() {
           <p className="font-display text-[120px] font-bold leading-none gradient-text sm:text-[180px]">
             404
           </p>
-          <h1 className="mt-2 text-3xl font-semibold text-white sm:text-4xl">
+          <h1 className="mt-2 text-3xl font-semibold text-trn-text sm:text-4xl">
             Signal lost
           </h1>
-          <p className="mx-auto mt-4 max-w-md text-nexus-textDim">
-            The route you're looking for doesn't exist — or the robot that used to live here
-            has wandered off.
+          <p className="mx-auto mt-4 max-w-md text-trn-text-secondary">
+            The route you&rsquo;re looking for doesn&rsquo;t exist — or the venture
+            that used to live here has already shipped and moved on.
           </p>
-          <Link to="/" className="btn-primary mt-8">
-            <HiOutlineArrowLeft className="h-4 w-4" /> Back to Home
-          </Link>
+
+          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Link to="/" className="btn-primary">
+              <HiOutlineArrowLeft className="h-4 w-4" /> Back to Home
+            </Link>
+            <Link to="/register" className="btn-ghost">
+              Apply to Co-Build <HiOutlineArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
       </section>
     </PageTransition>

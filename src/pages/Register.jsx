@@ -4,36 +4,65 @@ import {
   HiOutlineUser,
   HiOutlineEnvelope,
   HiOutlinePhone,
-  HiOutlineUserGroup,
+  HiOutlineCubeTransparent,
+  HiOutlineRocketLaunch,
   HiOutlineLightBulb,
   HiOutlineChatBubbleLeftRight,
   HiOutlineCheckCircle,
   HiOutlineArrowRight,
+  HiOutlineChevronDown,
 } from 'react-icons/hi2';
 
 import PageTransition from '../components/PageTransition.jsx';
 import PageHeader from '../components/PageHeader.jsx';
 
-const categories = ['Student', 'Startup', 'University', 'Researcher'];
-const interests = [
-  'Autonomous Navigation',
+const programs = [
+  '3rd Axis Program — Co-Build',
+  'First Launch Program — Launchpad',
+  'CTO Lift-Off — Scale-Up',
+  'Not sure yet — let\u2019s talk',
+];
+
+const focusAreas = [
+  'Autonomous Mobility',
   'Manipulation & Grasping',
-  'Computer Vision',
+  'Computer Vision & Perception',
   'Reinforcement Learning',
   'Drones & UAVs',
   'Humanoids',
   'Industrial Automation',
   'Medical Robotics',
+  'AI Infrastructure',
+  'Other / Multi-disciplinary',
 ];
 
 const initialForm = {
   fullName: '',
   email: '',
   phone: '',
-  category: '',
-  interest: '',
+  ventureName: '',
+  program: '',
+  focusArea: '',
   message: '',
 };
+
+/* Reusable styled select with a custom chevron — keeps visual parity with input-field */
+function StyledSelect({ value, onChange, children }) {
+  return (
+    <div className="relative">
+      <select
+        value={value}
+        onChange={onChange}
+        className="input-field w-full cursor-pointer appearance-none pr-10"
+      >
+        {children}
+      </select>
+      <HiOutlineChevronDown
+        className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-trn-red"
+      />
+    </div>
+  );
+}
 
 export default function Register() {
   const [form, setForm] = useState(initialForm);
@@ -51,10 +80,11 @@ export default function Register() {
     if (!form.phone.trim()) e.phone = 'Phone number is required';
     else if (!/^[+\d][\d\s\-()]{6,}$/.test(form.phone))
       e.phone = 'Please enter a valid phone number';
-    if (!form.category) e.category = 'Please select a category';
-    if (!form.interest) e.interest = 'Please pick an area of interest';
-    if (!form.message.trim() || form.message.trim().length < 20)
-      e.message = 'Tell us a bit more — at least 20 characters';
+    // ventureName is optional — no validation
+    if (!form.program) e.program = 'Please select a program';
+    if (!form.focusArea) e.focusArea = 'Please pick a focus area';
+    if (!form.message.trim() || form.message.trim().length < 30)
+      e.message = 'Tell us a bit more — at least 30 characters';
     return e;
   };
 
@@ -77,13 +107,15 @@ export default function Register() {
     setForm(initialForm);
   };
 
+  const dropdownOptionClass = 'bg-trn-card text-trn-text';
+
   return (
     <PageTransition>
       <PageHeader
-        eyebrow="Join the Nexus"
-        title="Become part of the"
-        highlight="robotics vanguard"
-        subtitle="Tell us who you are and what you're working on. We'll get back within two business days with next steps."
+        eyebrow="Apply to co-build"
+        title="Tell us what you&rsquo;re building."
+        highlight="Let&rsquo;s explore co-founding."
+        subtitle="Whether you have a prototype, a research paper, or a problem you can&rsquo;t stop thinking about — we want to hear from you. We respond within two business days."
       />
 
       <section className="section pt-4">
@@ -95,18 +127,19 @@ export default function Register() {
             transition={{ duration: 0.5 }}
             className="lg:col-span-3"
           >
-            <div className="card">
+            <div className="card glass-red">
               {submitted ? (
                 <div className="flex flex-col items-center py-8 text-center">
-                  <div className="grid h-16 w-16 place-items-center rounded-full bg-nexus-gradient shadow-neon">
+                  <div className="grid h-16 w-16 place-items-center rounded-full bg-trn-red shadow-red-glow">
                     <HiOutlineCheckCircle className="h-8 w-8 text-white" />
                   </div>
-                  <h3 className="mt-6 text-2xl font-semibold text-white">
+                  <h3 className="mt-6 text-2xl font-semibold text-trn-text">
                     Application received
                   </h3>
-                  <p className="mt-3 max-w-md text-sm text-nexus-textDim">
-                    Thanks for applying to Robotic Nexus. Our team will review your
-                    submission and reach out within two business days with next steps.
+                  <p className="mt-3 max-w-md text-sm text-trn-text-secondary">
+                    Thanks for applying to The Robotic Nexus. Our partners will review your
+                    submission and get back to you within two business days. If we see a fit,
+                    we&rsquo;ll set up a 30-minute discovery call.
                   </p>
                   <button
                     type="button"
@@ -157,54 +190,69 @@ export default function Register() {
                     </Field>
                   </div>
 
+                  <Field
+                    label="Venture / Project Name (optional)"
+                    icon={HiOutlineCubeTransparent}
+                  >
+                    <input
+                      type="text"
+                      placeholder="Leave blank if you haven't named it yet"
+                      value={form.ventureName}
+                      onChange={handleChange('ventureName')}
+                      className="input-field"
+                    />
+                  </Field>
+
                   <div className="grid gap-5 sm:grid-cols-2">
                     <Field
-                      label="Category"
-                      icon={HiOutlineUserGroup}
-                      error={errors.category}
+                      label="Program of Interest"
+                      icon={HiOutlineRocketLaunch}
+                      error={errors.program}
                     >
-                      <select
-                        value={form.category}
-                        onChange={handleChange('category')}
-                        className="input-field appearance-none"
+                      <StyledSelect
+                        value={form.program}
+                        onChange={handleChange('program')}
                       >
-                        <option value="">Choose one</option>
-                        {categories.map((c) => (
-                          <option key={c} value={c}>
-                            {c}
+                        <option value="" disabled className={dropdownOptionClass}>
+                          Choose a program
+                        </option>
+                        {programs.map((p) => (
+                          <option key={p} value={p} className={dropdownOptionClass}>
+                            {p}
                           </option>
                         ))}
-                      </select>
+                      </StyledSelect>
                     </Field>
 
                     <Field
-                      label="Area of Interest"
+                      label="Focus Area"
                       icon={HiOutlineLightBulb}
-                      error={errors.interest}
+                      error={errors.focusArea}
                     >
-                      <select
-                        value={form.interest}
-                        onChange={handleChange('interest')}
-                        className="input-field appearance-none"
+                      <StyledSelect
+                        value={form.focusArea}
+                        onChange={handleChange('focusArea')}
                       >
-                        <option value="">Pick a focus area</option>
-                        {interests.map((i) => (
-                          <option key={i} value={i}>
-                            {i}
+                        <option value="" disabled className={dropdownOptionClass}>
+                          Pick your domain
+                        </option>
+                        {focusAreas.map((f) => (
+                          <option key={f} value={f} className={dropdownOptionClass}>
+                            {f}
                           </option>
                         ))}
-                      </select>
+                      </StyledSelect>
                     </Field>
                   </div>
 
                   <Field
-                    label="Tell us about your project"
+                    label="Tell us about your venture"
                     icon={HiOutlineChatBubbleLeftRight}
                     error={errors.message}
                   >
                     <textarea
-                      rows={5}
-                      placeholder="What are you building, what stage are you at, and what do you need from Nexus?"
+                      rows={6}
+                      placeholder="What are you building? What stage are you at — idea, prototype, pilot, or revenue? What do you need from TRN — capital, co-builders, manufacturing, or something else?"
                       value={form.message}
                       onChange={handleChange('message')}
                       className="input-field resize-none"
@@ -220,8 +268,8 @@ export default function Register() {
                     {!submitting && <HiOutlineArrowRight className="h-4 w-4" />}
                   </button>
 
-                  <p className="text-center text-xs text-nexus-textDim">
-                    By applying you agree to our code of conduct and membership terms.
+                  <p className="text-center text-xs text-trn-text-secondary">
+                    By applying you agree to TRN&rsquo;s code of conduct and partnership terms.
                   </p>
                 </form>
               )}
@@ -235,46 +283,61 @@ export default function Register() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="space-y-6 lg:col-span-2"
           >
-            <div className="card">
-              <h3 className="text-lg font-semibold text-white">What happens next</h3>
+            <div className="card glass-red">
+              <h3 className="text-lg font-semibold text-trn-text">What happens next</h3>
               <ol className="mt-5 space-y-4">
                 {[
                   {
                     n: '1',
                     t: 'We review your application',
-                    c: 'Our team reads every single submission. Usually within 48 hours.',
+                    c: 'Our partners read every single submission. Usually within 48 hours.',
                   },
                   {
                     n: '2',
-                    t: '30-minute intro call',
-                    c: 'We learn about your project and answer your questions.',
+                    t: '30-minute discovery call',
+                    c: 'We learn about your venture, your team, and what you need. We answer your questions about co-building.',
                   },
                   {
                     n: '3',
-                    t: 'Onboarding & lab tour',
-                    c: 'If it\'s a fit, we get you set up within a week.',
+                    t: 'Partnership exploration',
+                    c: 'If it&rsquo;s a fit, we begin a two-week deep-dive — checking technical, market, and team alignment before any commitment.',
                   },
                 ].map((s) => (
                   <li key={s.n} className="flex gap-4">
-                    <span className="grid h-8 w-8 flex-none place-items-center rounded-full bg-nexus-gradient font-display text-sm font-bold text-white shadow-neon">
+                    <span className="grid h-8 w-8 flex-none place-items-center rounded-full bg-trn-red font-display text-sm font-bold text-white shadow-red-glow">
                       {s.n}
                     </span>
                     <div>
-                      <h4 className="text-sm font-semibold text-white">{s.t}</h4>
-                      <p className="mt-1 text-xs leading-relaxed text-nexus-textDim">{s.c}</p>
+                      <h4 className="text-sm font-semibold text-trn-text">{s.t}</h4>
+                      <p
+                        className="mt-1 text-xs leading-relaxed text-trn-text-secondary"
+                        dangerouslySetInnerHTML={{ __html: s.c }}
+                      />
                     </div>
                   </li>
                 ))}
               </ol>
             </div>
 
-            <div className="card">
-              <h3 className="text-lg font-semibold text-white">Prefer email?</h3>
-              <p className="mt-2 text-sm text-nexus-textDim">
-                Send a note with your GitHub, portfolio, or project link to{' '}
+            <div className="card glass-red">
+              <h3 className="text-lg font-semibold text-trn-text">Who should apply</h3>
+              <p className="mt-2 text-sm leading-relaxed text-trn-text-secondary">
+                Founders building in robotics, AI, hardware, or industrial automation.
+                Researchers with breakthrough work ready to commercialize. Engineer-founders
+                with a prototype and a co-founder. 0→1 startups ready to scale.
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-trn-text-secondary">
+                If you&rsquo;re not sure whether you&rsquo;re a fit — apply anyway. We&rsquo;ll tell you.
+              </p>
+            </div>
+
+            <div className="card glass-red">
+              <h3 className="text-lg font-semibold text-trn-text">Prefer email?</h3>
+              <p className="mt-2 text-sm text-trn-text-secondary">
+                Send a note with your venture deck, GitHub, or portfolio link to{' '}
                 <a
                   href="mailto:manali@nantatech.com"
-                  className="text-nexus-neon hover:underline"
+                  className="text-trn-red hover:underline"
                 >
                   manali@nantatech.com
                 </a>
@@ -291,12 +354,12 @@ export default function Register() {
 function Field({ label, icon: Icon, error, children }) {
   return (
     <label className="block">
-      <span className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.15em] text-nexus-textDim">
-        <Icon className="h-4 w-4 text-nexus-neon" />
+      <span className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.15em] text-trn-text-secondary">
+        <Icon className="h-4 w-4 text-trn-red" />
         {label}
       </span>
       {children}
-      {error && <span className="mt-1.5 block text-xs text-nexus-pink">{error}</span>}
+      {error && <span className="mt-1.5 block text-xs text-trn-red">{error}</span>}
     </label>
   );
 }
