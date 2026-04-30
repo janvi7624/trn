@@ -7,19 +7,131 @@ import {
   HiOutlineAcademicCap,
   HiOutlineArrowRight,
   HiOutlineCheckCircle,
+  HiOutlineCubeTransparent,
+  HiOutlineArrowTrendingUp,
+  HiOutlineMagnifyingGlass,
+  HiOutlineLightBulb,
+  HiOutlineBanknotes,
+  HiOutlineWrenchScrewdriver,
+  HiOutlineUsers,
 } from 'react-icons/hi2';
 
 import PageTransition from '../components/PageTransition.jsx';
 import PageHeader from '../components/PageHeader.jsx';
 import SectionTitle from '../components/SectionTitle.jsx';
 
-const services = [
+/* The three programs — TRN's main entry paths (House-of-Starts style) */
+const programs = [
+  {
+    icon: HiOutlineRocketLaunch,
+    tag: 'Launchpad',
+    name: 'First Launch Program',
+    description:
+      'Got a groundbreaking robotics or AI idea but no launchpad? Join First Launch — we turn your vision into a venture from the ground up.',
+    perks: [
+      '90-day Discovery sprint with TRN partners',
+      'Prototyping budget and lab access',
+      'Co-founder matching from our network',
+      'Stage-gated capital up to seed round',
+      'Full IP and entity structuring support',
+    ],
+    cta: 'Join the Waitlist',
+    highlight: false,
+  },
+  {
+    icon: HiOutlineCubeTransparent,
+    tag: 'Co-Build',
+    name: '3rd Axis Program',
+    description:
+      'Got the vision and need the right partner to ship it? We co-build your robotics venture — your idea, our execution, shared upside.',
+    perks: [
+      'Embedded technical co-founder for 12–18 months',
+      'Pre-seed capital ($100K–$500K)',
+      'Full TRN lab and AI infrastructure access',
+      'Trusted Partner Network for prototyping & pilots',
+      'Series A intros via our VC network',
+    ],
+    cta: 'Apply to Co-Build',
+    highlight: true,
+  },
+  {
+    icon: HiOutlineArrowTrendingUp,
+    tag: 'Scale-Up',
+    name: 'CTO Lift-Off',
+    description:
+      'Shipped 0→1 and ready for the next leap? CTO Lift-Off elevates your leadership team and operations to take you to industry scale.',
+    perks: [
+      'Senior fractional CTO and operator support',
+      'Engineering team scale-up playbook',
+      'Series A / B preparation and warm intros',
+      'Manufacturing partner introductions',
+      'Ongoing access to TRN&rsquo;s full partner network',
+    ],
+    cta: 'Join the Waitlist',
+    highlight: false,
+  },
+];
+
+/* The 4-stage process — deeper detail than Home */
+const stages = [
+  {
+    step: '01',
+    icon: HiOutlineMagnifyingGlass,
+    title: 'Discovery',
+    duration: '4–8 weeks',
+    copy: 'Problem, customer, market, and technical feasibility analysis. We get clear on what we&rsquo;re building, who it&rsquo;s for, and whether the technology can actually deliver — before a single line of code or CAD.',
+    deliverables: [
+      'Problem-customer-market thesis',
+      'Competitive and technical landscape',
+      'Risk register with kill criteria',
+    ],
+  },
+  {
+    step: '02',
+    icon: HiOutlineLightBulb,
+    title: 'Design & Validation',
+    duration: '8–16 weeks',
+    copy: 'Rapid prototyping, pilot testing, and structured customer interviews. We test the riskiest assumptions first — usually hardware-market fit, often regulatory, sometimes both.',
+    deliverables: [
+      'Working prototype or proof-of-concept',
+      'Pilot results from 3+ design partners',
+      'Validated unit economics',
+    ],
+  },
+  {
+    step: '03',
+    icon: HiOutlineRocketLaunch,
+    title: 'Invest & Launch',
+    duration: '12–24 weeks',
+    copy: 'Capital deployment, IP and entity structuring, founder cap-table alignment, and first commercial launch. Incentives get aligned so the whole team rows the same direction.',
+    deliverables: [
+      'Pre-seed / seed round closed',
+      'Cap table, IP, and entity finalized',
+      'First paying customer or signed pilot',
+    ],
+  },
+  {
+    step: '04',
+    icon: HiOutlineArrowTrendingUp,
+    title: 'Growth',
+    duration: 'Ongoing',
+    copy: 'Operating team scale-up, fractional support from TRN partners, full Trusted Partner Network on demand. We stay in the trenches until you ship at industry scale.',
+    deliverables: [
+      'Core operating team hired',
+      'Manufacturing & supply chain locked',
+      'Series A and beyond on the runway',
+    ],
+  },
+];
+
+/* What every TRN venture gets — the infrastructure stack */
+const offerings = [
   {
     icon: HiOutlineBeaker,
-    tag: 'Hardware Workbench',
+    tag: 'Hardware',
     title: 'Hardware Workbench',
     description:
-      'Industrial-grade robotics hardware ready to use. Motion capture, ROS 2 environments, rapid prototyping—step in and build immediately.',
+      'Industrial-grade robotics hardware, ready to use the moment you join — no procurement cycles, no purchase orders.',
     features: [
       'Industrial robotic arms (UR5e, Franka, KUKA)',
       'Drone cages with OptiTrack motion capture',
@@ -30,40 +142,40 @@ const services = [
   {
     icon: HiOutlineCpuChip,
     tag: 'AI Infrastructure',
-    title: 'AI & Simulation Infrastructure',
+    title: 'AI & Simulation Stack',
     description:
-      'GPU clusters, Isaac Sim environments, and pre-built AI pipelines. Train policies faster. Iterate smarter. Ship sooner.',
+      'GPU clusters and pre-built ML pipelines. Train policies, run sim-to-real, and validate edge cases without spinning up your own infra.',
     features: [
       'On-demand GPU clusters (A100, H100)',
       'Isaac Sim and Gazebo environments pre-configured',
-      'Pre-built AI training pipelines (RL, CV)',
+      'Pre-built AI training pipelines (RL, CV, sim-to-real)',
       'Curated robotics datasets and benchmarks',
     ],
   },
   {
-    icon: HiOutlineRocketLaunch,
-    tag: 'Go-to-Market',
-    title: 'Go-to-Market Acceleration',
+    icon: HiOutlineBanknotes,
+    tag: 'Capital & GTM',
+    title: 'Capital & Go-to-Market',
     description:
-      'From prototype to pilot to scale. Legal, compliance, procurement support tailored for robotics and AI ventures.',
+      'From pre-seed checks to enterprise pilots. We deploy capital and open doors — so you can focus on building the system, not the deck.',
     features: [
-      'Equity-free grants up to $50,000',
-      'Legal, compliance, and IP support',
-      'Pilot introductions to industry partners',
+      'Pre-seed and seed checks ($100K–$1M)',
+      'Legal, IP, compliance, and procurement support',
+      'Pilot introductions to enterprise customers',
       'Investor intros to robotics-focused VCs',
     ],
   },
   {
     icon: HiOutlineAcademicCap,
-    tag: 'Mentorship',
-    title: 'Expert Guidance',
+    tag: 'People',
+    title: 'Embedded Co-Founders',
     description:
-      "Weekly 1:1s with builders who've shipped products you admire. Architecture reviews, technical depth, career fast-tracking.",
+      'Senior operators who plug into your team. Not advisors with a calendar link — co-builders shipping alongside you.',
     features: [
-      '1:1 sessions with roboticists & AI researchers',
-      'Monthly architecture and design reviews',
-      'Career guidance and strategic connections',
-      'Access to the full mentor network',
+      'Weekly 1:1s with senior roboticists and AI researchers',
+      'Architecture reviews from operators who&rsquo;ve shipped',
+      'Technical co-founder embedded for 12–18 months',
+      'Access to the full TRN Trusted Partner Network',
     ],
   },
 ];
@@ -91,43 +203,47 @@ const process = [
   },
 ];
 
-const plans = [
+/* Founder profiles — replaces pricing tiers */
+const founderProfiles = [
   {
-    name: 'Student',
-    price: 'Free',
-    description: 'For individual students working on research or personal projects.',
-    perks: [
-      'Lab access (20 hrs / month)',
-      'Community access',
-      'Monthly workshops',
-      'Open-source dataset access',
+    icon: HiOutlineBeaker,
+    name: 'The Researcher',
+    fitFor: 'Best fit: First Launch Program',
+    description:
+      'You&rsquo;ve got a paper, a breakthrough, a working lab demo. Now you need to turn it into a company.',
+    signals: [
+      'Strong technical foundation (PhD or equivalent)',
+      'Validated research or lab-tested concept',
+      'Looking for a co-founder, capital, and a path to market',
+      'Open to embedding with TRN for 12+ months',
     ],
     highlight: false,
   },
   {
-    name: 'Startup',
-    price: '$499',
-    period: '/mo',
-    description: 'For early-stage robotics teams building towards their first pilot.',
-    perks: [
-      'Unlimited lab access',
-      'GPU compute (200 hrs / mo)',
-      '2 mentor sessions / week',
-      'Grant application support',
-      'Investor intros',
+    icon: HiOutlineWrenchScrewdriver,
+    name: 'The Engineer-Founder',
+    fitFor: 'Best fit: 3rd Axis Program',
+    description:
+      'You&rsquo;ve got a prototype, a co-founder, and conviction. Now you need capital, manufacturing, and customers.',
+    signals: [
+      'Working prototype or early pilot deployment',
+      '1–3 person founding team in place',
+      'Need pre-seed / seed capital + operator support',
+      'Ready for 12–18 months of intense co-build',
     ],
     highlight: true,
   },
   {
-    name: 'University',
-    price: 'Custom',
-    description: 'For research labs and institutions running multiple active projects.',
-    perks: [
-      'Multi-seat lab access',
-      'Dedicated program coordinator',
-      'Joint R&D grants',
-      'Co-branded events',
-      'Publication support',
+    icon: HiOutlineUsers,
+    name: 'The Operator',
+    fitFor: 'Best fit: CTO Lift-Off',
+    description:
+      'You&rsquo;ve shipped 0→1. You have early customers. Now you need to scale to industry leader.',
+    signals: [
+      'Active product with paying customers',
+      'Series A-ready or recently closed',
+      'Need fractional CTO and scaling playbook',
+      'Want access to manufacturing & VC network',
     ],
     highlight: false,
   },
@@ -137,47 +253,87 @@ export default function Services() {
   return (
     <PageTransition>
       <PageHeader
-        eyebrow="Our Platform"
-        title="Everything builders need
-to ship intelligent"
-        highlight="systems"
-        subtitle="From hardware access to AI infrastructure to go-to-market support. Build smarter, faster, together."
+        eyebrow="How we co-build"
+        title="Programs, process, and"
+        highlight="everything in between"
+        subtitle="Three programs. Four stages. One promise — we co-build robotics ventures with you, from the first prototype to the first thousand units shipped."
       />
 
-      {/* SERVICES GRID */}
+      {/* PROGRAMS */}
       <section className="section pt-4">
-        <div className="container-nx grid gap-6 lg:grid-cols-2">
-          {services.map((s, i) => (
-            <motion.article
-              key={s.title}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="card card-hover group"
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-nexus-border bg-nexus-bg/80 text-nexus-neon shadow-[inset_0_0_20px_rgba(0,229,255,0.15)]">
-                  <s.icon className="h-6 w-6" />
+        <div className="container-nx">
+          <SectionTitle
+            eyebrow="Our programs"
+            title="Three paths into TRN."
+            highlight="Pick the one that fits."
+            subtitle="Whether you&rsquo;ve got a vision, a prototype, or a scaling startup — there&rsquo;s a venture-building program designed for where you are."
+          />
+
+          <div className="mt-16 grid gap-6 lg:grid-cols-3">
+            {programs.map((p, i) => (
+              <motion.div
+                key={p.name}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                className={`relative rounded-2xl border p-8 backdrop-blur-sm transition-all ${
+                  p.highlight
+                    ? 'border-trn-red/60 bg-trn-card/80 shadow-red-glow'
+                    : 'border-trn-border bg-trn-card/60 hover:border-trn-red/40'
+                }`}
+              >
+                {p.highlight && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-trn-red px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white shadow-red-glow">
+                    Most Popular
+                  </span>
+                )}
+
+                <div className="flex items-start justify-between gap-4">
+                  <div
+                    className={`inline-flex h-12 w-12 items-center justify-center rounded-xl ${
+                      p.highlight
+                        ? 'bg-trn-red text-white shadow-red-glow'
+                        : 'border border-trn-border bg-trn-bg/80 text-trn-red'
+                    }`}
+                  >
+                    <p.icon className="h-6 w-6" />
+                  </div>
+                  <span className="rounded-full border border-trn-border bg-trn-bg/60 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-trn-text-secondary">
+                    {p.tag}
+                  </span>
                 </div>
-                <span className="rounded-full border border-nexus-border bg-nexus-bg/60 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-nexus-textDim">
-                  {s.tag}
-                </span>
-              </div>
 
-              <h3 className="mt-6 text-2xl font-semibold text-white">{s.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-nexus-textDim">{s.description}</p>
+                <h3 className="mt-6 font-display text-2xl font-bold text-trn-text">
+                  {p.name}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-trn-text-secondary">
+                  {p.description}
+                </p>
 
-              <ul className="mt-6 space-y-2.5">
-                {s.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2 text-sm text-nexus-text">
-                    <HiOutlineCheckCircle className="mt-0.5 h-4 w-4 flex-none text-nexus-neon" />
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.article>
-          ))}
+                <ul className="mt-6 space-y-2.5">
+                  {p.perks.map((perk) => (
+                    <li
+                      key={perk}
+                      className="flex items-start gap-2 text-sm text-trn-text"
+                    >
+                      <HiOutlineCheckCircle className="mt-0.5 h-4 w-4 flex-none text-trn-red" />
+                      <span dangerouslySetInnerHTML={{ __html: perk }} />
+                    </li>
+                  ))}
+                </ul>
+
+                <Link
+                  to="/register"
+                  className={`mt-8 w-full ${
+                    p.highlight ? 'btn-primary' : 'btn-ghost'
+                  }`}
+                >
+                  {p.cta} <HiOutlineArrowRight className="h-4 w-4" />
+                </Link>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -210,63 +366,199 @@ to ship intelligent"
         </div>
       </section>
 
-      {/* PLANS */}
+      {/* THE 4-STAGE PROCESS */}
       <section className="section">
         <div className="container-nx">
           <SectionTitle
-            eyebrow="Membership"
-            title="Plans built for"
-            highlight="every stage"
-            subtitle="Start free as a student. Scale with your team. Custom terms for institutions."
+            eyebrow="How we co-build, in 4 stages"
+            title="From idea to industry."
+            highlight="Stage by stage."
+            subtitle="Every TRN venture moves through the same four-stage process. Capital and conviction flow as validation deepens — no founder progresses to the next stage until they&rsquo;ve earned it."
           />
 
-          <div className="mt-16 grid gap-6 lg:grid-cols-3">
-            {plans.map((plan, i) => (
+          <div className="mt-16 grid gap-6 sm:grid-cols-2">
+            {stages.map((stage, i) => (
               <motion.div
-                key={plan.name}
+                key={stage.step}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                className="card glass-red card-hover relative overflow-hidden"
+              >
+                <span className="absolute right-5 top-5 font-display text-6xl font-bold text-trn-red/15">
+                  {stage.step}
+                </span>
+                <div className="relative">
+                  <div className="flex items-center gap-3">
+                    <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-trn-red text-white shadow-red-glow">
+                      <stage.icon className="h-6 w-6" />
+                    </div>
+                    <span className="rounded-full border border-trn-red/40 bg-trn-red/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-trn-red">
+                      {stage.duration}
+                    </span>
+                  </div>
+
+                  <h3 className="mt-6 text-2xl font-semibold text-trn-text">
+                    {stage.title}
+                  </h3>
+                  <p
+                    className="mt-3 text-sm leading-relaxed text-trn-text-secondary"
+                    dangerouslySetInnerHTML={{ __html: stage.copy }}
+                  />
+
+                  <div className="mt-6 border-t border-trn-border pt-5">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-trn-text-muted">
+                      Stage deliverables
+                    </p>
+                    <ul className="mt-3 space-y-2">
+                      {stage.deliverables.map((d) => (
+                        <li
+                          key={d}
+                          className="flex items-start gap-2 text-sm text-trn-text"
+                        >
+                          <HiOutlineCheckCircle className="mt-0.5 h-4 w-4 flex-none text-trn-red" />
+                          <span>{d}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* WHAT EVERY VENTURE GETS — the offerings */}
+      <section className="section">
+        <div className="container-nx">
+          <SectionTitle
+            eyebrow="What every venture gets"
+            title="The full venture-building"
+            highlight="infrastructure"
+            subtitle="Every program comes with the complete TRN stack. No pay-per-feature, no hidden tiers — we give you everything because we&rsquo;re invested in your outcome."
+          />
+
+          <div className="mt-16 grid gap-6 lg:grid-cols-2">
+            {offerings.map((o, i) => (
+              <motion.article
+                key={o.title}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.5, delay: i * 0.08 }}
-                className={`relative rounded-2xl border p-8 backdrop-blur-sm transition-all ${
-                  plan.highlight
-                    ? 'border-nexus-neon/60 bg-nexus-card/80 shadow-neon'
-                    : 'border-nexus-border bg-nexus-card/60 hover:border-nexus-neon/40'
-                }`}
+                className="card glass-red card-hover group"
               >
-                {plan.highlight && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-nexus-gradient px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white shadow-neon">
-                    Most popular
+                <div className="flex items-start justify-between gap-4">
+                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-trn-border bg-trn-bg/80 text-trn-red shadow-[inset_0_0_20px_rgba(229,9,20,0.15)]">
+                    <o.icon className="h-6 w-6" />
+                  </div>
+                  <span className="rounded-full border border-trn-border bg-trn-bg/60 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-trn-text-secondary">
+                    {o.tag}
                   </span>
-                )}
-
-                <h3 className="text-xl font-semibold text-white">{plan.name}</h3>
-                <div className="mt-4 flex items-baseline gap-1">
-                  <span className="font-display text-4xl font-bold text-white">{plan.price}</span>
-                  {plan.period && (
-                    <span className="text-sm text-nexus-textDim">{plan.period}</span>
-                  )}
                 </div>
-                <p className="mt-3 text-sm text-nexus-textDim">{plan.description}</p>
+
+                <h3 className="mt-6 text-2xl font-semibold text-trn-text">{o.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-trn-text-secondary">
+                  {o.description}
+                </p>
 
                 <ul className="mt-6 space-y-2.5">
-                  {plan.perks.map((perk) => (
-                    <li key={perk} className="flex items-start gap-2 text-sm text-nexus-text">
-                      <HiOutlineCheckCircle className="mt-0.5 h-4 w-4 flex-none text-nexus-neon" />
-                      <span>{perk}</span>
+                  {o.features.map((f) => (
+                    <li
+                      key={f}
+                      className="flex items-start gap-2 text-sm text-trn-text"
+                    >
+                      <HiOutlineCheckCircle className="mt-0.5 h-4 w-4 flex-none text-trn-red" />
+                      <span dangerouslySetInnerHTML={{ __html: f }} />
+                    </li>
+                  ))}
+                </ul>
+              </motion.article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* WHO WE BUILD WITH — replaces pricing tiers */}
+      <section className="section">
+        <div className="container-nx">
+          <SectionTitle
+            eyebrow="Who we build with"
+            title="Three kinds of"
+            highlight="founders fit TRN"
+            subtitle="We don&rsquo;t co-build with everyone. We back founders who are technical, hands-on, and committed to the long arc of hardware. See where you fit."
+          />
+
+          <div className="mt-16 grid gap-6 lg:grid-cols-3">
+            {founderProfiles.map((profile, i) => (
+              <motion.div
+                key={profile.name}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                className={`relative rounded-2xl border p-8 backdrop-blur-sm transition-all ${
+                  profile.highlight
+                    ? 'border-trn-red/60 bg-trn-card/80 shadow-red-glow'
+                    : 'border-trn-border bg-trn-card/60 hover:border-trn-red/40'
+                }`}
+              >
+                <div
+                  className={`inline-flex h-14 w-14 items-center justify-center rounded-2xl ${
+                    profile.highlight
+                      ? 'bg-trn-red text-white shadow-red-glow'
+                      : 'border border-trn-red/40 bg-trn-red/10 text-trn-red'
+                  }`}
+                >
+                  <profile.icon className="h-7 w-7" />
+                </div>
+
+                <h3 className="mt-6 font-display text-2xl font-bold text-trn-text">
+                  {profile.name}
+                </h3>
+                <p
+                  className="mt-3 text-sm leading-relaxed text-trn-text-secondary"
+                  dangerouslySetInnerHTML={{ __html: profile.description }}
+                />
+
+                <ul className="mt-6 space-y-2.5">
+                  {profile.signals.map((s) => (
+                    <li
+                      key={s}
+                      className="flex items-start gap-2 text-sm text-trn-text"
+                    >
+                      <HiOutlineCheckCircle className="mt-0.5 h-4 w-4 flex-none text-trn-red" />
+                      <span dangerouslySetInnerHTML={{ __html: s }} />
                     </li>
                   ))}
                 </ul>
 
-                <Link
-                  to="/register"
-                  className={`mt-8 w-full ${plan.highlight ? 'btn-primary' : 'btn-ghost'}`}
-                >
-                  Get started <HiOutlineArrowRight className="h-4 w-4" />
-                </Link>
+                <div className="mt-6 border-t border-trn-border pt-4">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-trn-red">
+                    {profile.fitFor}
+                  </p>
+                </div>
               </motion.div>
             ))}
           </div>
+
+          {/* Bottom CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.5 }}
+            className="mt-16 flex flex-col items-center justify-center gap-4 sm:flex-row"
+          >
+            <Link to="/register" className="btn-primary">
+              Apply to Co-Build <HiOutlineArrowRight className="h-5 w-5" />
+            </Link>
+            <Link to="/contact" className="btn-ghost">
+              Not sure? Talk to us
+            </Link>
+          </motion.div>
         </div>
       </section>
     </PageTransition>

@@ -8,18 +8,18 @@ const sections = [
     links: [
       { to: '/', label: 'Home' },
       { to: '/about', label: 'About Us' },
-      { to: '/services', label: 'Services' },
-      { to: '/register', label: 'Register' },
+      { to: '/services', label: 'Programs' },
+      { to: '/register', label: 'Apply' },
       { to: '/contact', label: 'Contact' },
     ],
   },
   {
     title: 'Programs',
     links: [
-      { to: '/services', label: 'Robotics Lab Access' },
-      { to: '/services', label: 'R&D Support' },
-      { to: '/services', label: 'Startup Incubation' },
-      { to: '/services', label: 'Mentorship Network' },
+      { to: '/services', label: '3rd Axis Program' },
+      { to: '/services', label: 'First Launch Program' },
+      { to: '/services', label: 'CTO Lift-Off' },
+      { to: '/services', label: 'Trusted Partner Network' },
     ],
   },
 ];
@@ -40,9 +40,9 @@ export default function Footer() {
         <div className="lg:col-span-5">
           <TRNLogo />
           <p className="mt-5 max-w-sm text-sm leading-relaxed text-trn-text-secondary">
-            Robotic Nexus is the infrastructure layer for robotics builders — giving
-            students, startups, and universities the labs, mentorship, and funding
-            they need to ship real-world robotics.
+            The Robotic Nexus is a venture studio for robotics, AI, hardware, and
+            automation. We co-build ventures with founders — sharing capital,
+            expertise, and the long-arc commitment to ship at scale.
           </p>
 
           <div className="mt-6 flex items-center gap-3">
@@ -89,18 +89,32 @@ export default function Footer() {
             Contact
           </h4>
           <ul className="mt-4 space-y-2 text-sm text-trn-text-secondary">
-            <li>manali@nantatech.com</li>
-            <li>+91 99090 41684</li>
-            <li>204 to 207, 2nd Floor, “F” Block, Shivalik Sharda Harmony, Above Chelvies Coffee Panjarapole Crossroads, Ambawadi, Ahmedabad-380015</li>
+            <li>
+              <a
+                href="mailto:manali@nantatech.com"
+                className="transition hover:text-trn-red"
+              >
+                manali@nantatech.com
+              </a>
+            </li>
+            <li>
+              <a href="tel:+919909041684" className="transition hover:text-trn-red">
+                +91 99090 41684
+              </a>
+            </li>
+            <li className="leading-relaxed">
+              204 to 207, 2nd Floor, “F” Block, Shivalik Sharda Harmony, Above
+              Chelvies Coffee, Panjarapole Crossroads, Ambawadi, Ahmedabad — 380015
+            </li>
           </ul>
         </div>
       </div>
 
       <div className="border-t border-trn-red/30">
         <div className="container-nx flex flex-col items-center justify-between gap-3 py-6 text-xs text-trn-text-muted sm:flex-row">
-          <p>© {new Date().getFullYear()} Robotic Nexus. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} The Robotic Nexus. All rights reserved.</p>
           <p className="font-display tracking-[0.2em]">
-            <span className="gradient-text">EMPOWERING</span> ROBOTICS INNOVATION
+            <span className="gradient-text">CO-BUILDING</span> ROBOTICS VENTURES
           </p>
         </div>
       </div>
