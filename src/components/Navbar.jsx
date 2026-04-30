@@ -57,7 +57,7 @@ export default function Navbar() {
 
         <div className="hidden md:block">
           <Link to="/register" className="btn-primary">
-            Join Nexus
+            Apply
           </Link>
         </div>
 
@@ -100,7 +100,7 @@ export default function Navbar() {
                 </NavLink>
               ))}
               <Link to="/register" className="btn-primary mt-4 w-full">
-                Join Nexus
+                Apply to Co-Build
               </Link>
             </div>
           </motion.div>
