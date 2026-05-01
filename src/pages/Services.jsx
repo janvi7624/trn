@@ -19,6 +19,7 @@ import {
 import PageTransition from '../components/PageTransition.jsx';
 import PageHeader from '../components/PageHeader.jsx';
 import SectionTitle from '../components/SectionTitle.jsx';
+import { useState } from 'react';
 
 /* The three programs — TRN's main entry paths (House-of-Starts style) */
 const programs = [
@@ -250,6 +251,9 @@ const founderProfiles = [
 ];
 
 export default function Services() {
+  const [selectedIndex, setSelectedIndex] = useState(
+    founderProfiles.findIndex((p) => p.highlight)
+  );
   return (
     <PageTransition>
       <PageHeader
@@ -277,11 +281,10 @@ export default function Services() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.5, delay: i * 0.08 }}
-                className={`relative rounded-2xl border p-8 backdrop-blur-sm transition-all ${
-                  p.highlight
+                className={`relative rounded-2xl border p-8 backdrop-blur-sm transition-all ${p.highlight
                     ? 'border-trn-red/60 bg-trn-card/80 shadow-red-glow'
                     : 'border-trn-border bg-trn-card/60 hover:border-trn-red/40'
-                }`}
+                  }`}
               >
                 {p.highlight && (
                   <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-trn-red px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white shadow-red-glow">
@@ -291,11 +294,10 @@ export default function Services() {
 
                 <div className="flex items-start justify-between gap-4">
                   <div
-                    className={`inline-flex h-12 w-12 items-center justify-center rounded-xl ${
-                      p.highlight
+                    className={`inline-flex h-12 w-12 items-center justify-center rounded-xl ${p.highlight
                         ? 'bg-trn-red text-white shadow-red-glow'
                         : 'border border-trn-border bg-trn-bg/80 text-trn-red'
-                    }`}
+                      }`}
                   >
                     <p.icon className="h-6 w-6" />
                   </div>
@@ -325,9 +327,8 @@ export default function Services() {
 
                 <Link
                   to="/register"
-                  className={`mt-8 w-full ${
-                    p.highlight ? 'btn-primary' : 'btn-ghost'
-                  }`}
+                  className={`mt-8 w-full ${p.highlight ? 'btn-primary' : 'btn-ghost'
+                    }`}
                 >
                   {p.cta} <HiOutlineArrowRight className="h-4 w-4" />
                 </Link>
@@ -492,56 +493,64 @@ export default function Services() {
           />
 
           <div className="mt-16 grid gap-6 lg:grid-cols-3">
-            {founderProfiles.map((profile, i) => (
-              <motion.div
-                key={profile.name}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
-                className={`relative rounded-2xl border p-8 backdrop-blur-sm transition-all ${
-                  profile.highlight
-                    ? 'border-trn-red/60 bg-trn-card/80 shadow-red-glow'
-                    : 'border-trn-border bg-trn-card/60 hover:border-trn-red/40'
-                }`}
-              >
-                <div
-                  className={`inline-flex h-14 w-14 items-center justify-center rounded-2xl ${
-                    profile.highlight
-                      ? 'bg-trn-red text-white shadow-red-glow'
-                      : 'border border-trn-red/40 bg-trn-red/10 text-trn-red'
-                  }`}
+            {founderProfiles.map((profile, i) => {
+              const isSelected = selectedIndex === i;
+              return (
+                <motion.div
+                  key={profile.name}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.5, delay: i * 0.08 }}
+                  onClick={() => setSelectedIndex(isSelected ? null : i)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setSelectedIndex(isSelected ? null : i);
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
+                  aria-pressed={isSelected}
+                  className={`relative cursor-pointer rounded-2xl border p-8 backdrop-blur-sm transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-trn-red/60 ${isSelected
+                      ? 'border-trn-red bg-trn-card/90 shadow-red-glow scale-[1.02] ring-2 ring-trn-red/40'
+                      : 'border-trn-border bg-trn-card/60 hover:border-trn-red/40 hover:scale-[1.01]'
+                    }`}
                 >
-                  <profile.icon className="h-7 w-7" />
-                </div>
+                  <div
+                    className={`inline-flex h-14 w-14 items-center justify-center rounded-2xl transition-all ${isSelected
+                        ? 'bg-trn-red text-white shadow-red-glow'
+                        : 'border border-trn-red/40 bg-trn-red/10 text-trn-red'
+                      }`}
+                  >
+                    <profile.icon className="h-7 w-7" />
+                  </div>
 
-                <h3 className="mt-6 font-display text-2xl font-bold text-trn-text">
-                  {profile.name}
-                </h3>
-                <p
-                  className="mt-3 text-sm leading-relaxed text-trn-text-secondary"
-                  dangerouslySetInnerHTML={{ __html: profile.description }}
-                />
+                  <h3 className="mt-6 font-display text-2xl font-bold text-trn-text">
+                    {profile.name}
+                  </h3>
+                  <p
+                    className="mt-3 text-sm leading-relaxed text-trn-text-secondary"
+                    dangerouslySetInnerHTML={{ __html: profile.description }}
+                  />
 
-                <ul className="mt-6 space-y-2.5">
-                  {profile.signals.map((s) => (
-                    <li
-                      key={s}
-                      className="flex items-start gap-2 text-sm text-trn-text"
-                    >
-                      <HiOutlineCheckCircle className="mt-0.5 h-4 w-4 flex-none text-trn-red" />
-                      <span dangerouslySetInnerHTML={{ __html: s }} />
-                    </li>
-                  ))}
-                </ul>
+                  <ul className="mt-6 space-y-2.5">
+                    {profile.signals.map((s) => (
+                      <li key={s} className="flex items-start gap-2 text-sm text-trn-text">
+                        <HiOutlineCheckCircle className="mt-0.5 h-4 w-4 flex-none text-trn-red" />
+                        <span dangerouslySetInnerHTML={{ __html: s }} />
+                      </li>
+                    ))}
+                  </ul>
 
-                <div className="mt-6 border-t border-trn-border pt-4">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-trn-red">
-                    {profile.fitFor}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
+                  <div className="mt-6 border-t border-trn-border pt-4">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-trn-red">
+                      {profile.fitFor}
+                    </p>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
 
           {/* Bottom CTA */}

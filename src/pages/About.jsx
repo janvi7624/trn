@@ -56,24 +56,14 @@ const roles = [
 
 const team = [
   {
-    name: 'Dr. Anika Rao',
-    role: 'Co-founder · Managing Partner',
-    bio: 'Ex-ISRO robotics lead. Co-founded two robotics ventures (one acquired). Embeds as the technical co-founder on TRN&rsquo;s deepest hardware bets.',
+    name: 'Mayank Jani',
+    role: 'MD',
+    bio: '',
   },
   {
-    name: 'Kabir Menon',
-    role: 'Co-founder · Head of Studio',
-    bio: 'Two-time robotics founder. Has helped raise $40M+ for hardware ventures. Owns the Discovery and Validation stages of every co-build.',
-  },
-  {
-    name: 'Ishita Varma',
-    role: 'Partner · AI & Simulation',
-    bio: 'PhD in reinforcement learning from ETH Zürich. Built sim-to-real pipelines at three robotics startups. Architects every venture&rsquo;s AI stack.',
-  },
-  {
-    name: 'Arjun Bhatt',
-    role: 'Partner · Network & Growth',
-    bio: 'Built BD orgs at two hardware unicorns. Runs the Trusted Partner Network — suppliers, integrators, and pilot customers across 12 industries.',
+    name: 'Mansi Jani',
+    role: 'Director',
+    bio: '',
   },
 ];
 
@@ -268,7 +258,7 @@ export default function About() {
       </section>
 
       {/* TIMELINE */}
-      <section className="section">
+      {/* <section className="section">
         <div className="container-nx">
           <SectionTitle
             eyebrow="Our story"
@@ -316,7 +306,7 @@ export default function About() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* TEAM */}
       <section className="section">
@@ -327,8 +317,8 @@ export default function About() {
             highlight="shipped robots"
             subtitle="Our partners have spent the last decade founding, funding, and shipping hardware ventures — at research labs, space agencies, and deep-tech startups. We know the traps because we&rsquo;ve fallen into them."
           />
-
-          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {/* <div className="mt-16 flex fl justify-center"> */}
+          <div className="mt-16 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 place-items-center">
             {team.map((member, i) => (
               <motion.div
                 key={member.name}
@@ -336,7 +326,7 @@ export default function About() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.5, delay: i * 0.08 }}
-                className="card glass-red card-hover text-center"
+                className="card glass-red card-hover text-center w-full max-w-xs"
               >
                 <div className="mx-auto grid h-20 w-20 place-items-center rounded-full border border-trn-red/60 bg-trn-red font-display text-2xl font-bold text-white shadow-red-glow">
                   {member.name
@@ -356,6 +346,7 @@ export default function About() {
               </motion.div>
             ))}
           </div>
+          {/* </div> */}
         </div>
       </section>
     </PageTransition>
