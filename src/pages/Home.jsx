@@ -511,27 +511,42 @@ export default function Home() {
                 </motion.div>
 
                 {/* Floating data tags */}
-                <motion.div
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-                  className="absolute left-0 top-[18%] rounded-lg border border-trn-red/40 bg-trn-bg/80 px-3 py-2 font-mono text-[11px] text-trn-text shadow-red-glow backdrop-blur"
+                <Link
+                  to="/services#program-first-launch-program"
+                  className="absolute left-0 top-[18%]"
                 >
-                  <span className="text-trn-red">●</span> First Launch Program
-                </motion.div>
-                <motion.div
-                  animate={{ y: [0, 8, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
-                  className="absolute right-0 top-[42%] rounded-lg border border-trn-red/40 bg-trn-bg/80 px-3 py-2 font-mono text-[11px] text-trn-text shadow-red-glow backdrop-blur"
+                  <motion.div
+                    animate={{ y: [0, -8, 0] }}
+                    transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+                    className="rounded-lg border border-trn-red/40 bg-trn-bg/80 px-3 py-2 font-mono text-[11px] text-trn-text shadow-red-glow backdrop-blur transition-colors hover:border-trn-red hover:bg-trn-bg"
+                  >
+                    <span className="text-trn-red">●</span> First Launch Program
+                  </motion.div>
+                </Link>
+                <Link
+                  to="/services#program-3rd-axis-program"
+                  className="absolute right-0 top-[42%]"
                 >
-                  <span className="text-trn-red">●</span> 3rd Axis Program
-                </motion.div>
-                <motion.div
-                  animate={{ y: [0, -6, 0] }}
-                  transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
-                  className="absolute bottom-[10%] left-[8%] rounded-lg border border-trn-red/40 bg-trn-bg/80 px-3 py-2 font-mono text-[11px] text-trn-text shadow-red-glow backdrop-blur"
+                  <motion.div
+                    animate={{ y: [0, 8, 0] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
+                    className="rounded-lg border border-trn-red/40 bg-trn-bg/80 px-3 py-2 font-mono text-[11px] text-trn-text shadow-red-glow backdrop-blur transition-colors hover:border-trn-red hover:bg-trn-bg"
+                  >
+                    <span className="text-trn-red">●</span> 3rd Axis Program
+                  </motion.div>
+                </Link>
+                <Link
+                  to="/services#program-cto-lift-off"
+                  className="absolute bottom-[10%] left-[8%]"
                 >
-                  <span className="text-trn-red">●</span> CTO Lift-Off
-                </motion.div>
+                  <motion.div
+                    animate={{ y: [0, -6, 0] }}
+                    transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
+                    className="rounded-lg border border-trn-red/40 bg-trn-bg/80 px-3 py-2 font-mono text-[11px] text-trn-text shadow-red-glow backdrop-blur transition-colors hover:border-trn-red hover:bg-trn-bg"
+                  >
+                    <span className="text-trn-red">●</span> CTO Lift-Off
+                  </motion.div>
+                </Link>
               </div>
             </motion.div>
           </ParallaxSection>

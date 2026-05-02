@@ -277,11 +277,12 @@ export default function Services() {
             {programs.map((p, i) => (
               <motion.div
                 key={p.name}
+                id={`program-${p.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.5, delay: i * 0.08 }}
-                className={`relative rounded-2xl border p-8 backdrop-blur-sm transition-all ${p.highlight
+                className={`relative scroll-mt-28 rounded-2xl border p-8 backdrop-blur-sm transition-all ${p.highlight
                     ? 'border-trn-red/60 bg-trn-card/80 shadow-red-glow'
                     : 'border-trn-border bg-trn-card/60 hover:border-trn-red/40'
                   }`}
