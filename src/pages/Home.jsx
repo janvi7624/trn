@@ -298,59 +298,240 @@ export default function Home() {
               </div>
             </motion.div>
           </ParallaxSection>
-
+          {/* right section — animated robot visual */}
           <ParallaxSection offset={-30}>
             <motion.div
               initial={{ opacity: 0, x: 24 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.6 }}
-              className="relative"
+              className="relative flex items-center justify-center"
             >
-              <div className="card glass-red relative overflow-hidden p-8">
-                <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-trn-red/20 blur-3xl" />
-                <div className="pointer-events-none absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-trn-red/10 blur-3xl" />
+              <div className="relative aspect-square w-full max-w-[520px]">
+                {/* Ambient glows */}
+                <motion.div
+                  animate={{ opacity: [0.35, 0.6, 0.35], scale: [1, 1.08, 1] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                  className="pointer-events-none absolute inset-0 rounded-full bg-trn-red/20 blur-3xl"
+                />
+                <div className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-trn-red/25 blur-3xl" />
+                <div className="pointer-events-none absolute -bottom-10 -left-10 h-48 w-48 rounded-full bg-trn-red/15 blur-3xl" />
 
-                <div className="relative space-y-5">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold uppercase tracking-[0.2em] text-trn-text-secondary">
-                      TRN/OS · venture
-                    </span>
-                    <div className="flex gap-1.5">
-                      <span className="h-2 w-2 rounded-full bg-trn-red shadow-[0_0_8px_rgba(229,9,20,0.6)]" />
-                      <span className="h-2 w-2 rounded-full bg-white opacity-40" />
-                      <span className="h-2 w-2 rounded-full bg-trn-red opacity-60" />
-                    </div>
-                  </div>
+                {/* Rotating orbital rings */}
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
+                  className="absolute inset-0 rounded-full border border-dashed border-trn-red/30"
+                />
+                <motion.div
+                  animate={{ rotate: -360 }}
+                  transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+                  className="absolute inset-[8%] rounded-full border border-trn-red/20"
+                />
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
+                  className="absolute inset-[18%] rounded-full border border-trn-red/40"
+                >
+                  <span className="absolute left-1/2 top-0 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-trn-red shadow-[0_0_12px_rgba(229,9,20,0.9)]" />
+                  <span className="absolute right-0 top-1/2 h-2 w-2 -translate-y-1/2 translate-x-1/2 rounded-full bg-white/80" />
+                  <span className="absolute bottom-0 left-1/2 h-2.5 w-2.5 -translate-x-1/2 translate-y-1/2 rounded-full bg-trn-red shadow-[0_0_10px_rgba(229,9,20,0.8)]" />
+                </motion.div>
 
-                  <div className="space-y-3">
-                    {[
-                      ['venture', 'autonomous_warehouse_v2', 'text-trn-text'],
-                      ['stage', 'PILOT_DEPLOYMENT', 'text-trn-red'],
-                      ['co_founder', 'Dr. Anika Rao', 'text-trn-text'],
-                      ['capital', '$1.4M deployed', 'text-trn-text'],
-                      ['next_review', '2026-04-18 10:00', 'text-trn-red'],
-                    ].map(([k, v, cls]) => (
-                      <div
-                        key={k}
-                        className="flex items-center justify-between rounded-lg border border-trn-border bg-trn-bg/60 px-4 py-3 font-mono text-xs"
+                {/* Floating robot — custom SVG */}
+                <motion.div
+                  animate={{ y: [0, -14, 0] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+                  className="absolute inset-[18%] flex items-center justify-center drop-shadow-[0_0_30px_rgba(229,9,20,0.5)]"
+                >
+                  <svg
+                    viewBox="0 0 200 220"
+                    className="h-full w-full"
+                    aria-label="TRN robot illustration"
+                  >
+                    <defs>
+                      <linearGradient id="trn-body" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#1a1a1a" />
+                        <stop offset="100%" stopColor="#0a0a0a" />
+                      </linearGradient>
+                      <linearGradient id="trn-plate" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#262626" />
+                        <stop offset="100%" stopColor="#0f0f0f" />
+                      </linearGradient>
+                      <radialGradient id="trn-eye" cx="0.5" cy="0.5" r="0.5">
+                        <stop offset="0%" stopColor="#ff5560" />
+                        <stop offset="60%" stopColor="#e50914" />
+                        <stop offset="100%" stopColor="#7a050a" />
+                      </radialGradient>
+                      <filter id="trn-glow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="3" result="b" />
+                        <feMerge>
+                          <feMergeNode in="b" />
+                          <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                      </filter>
+                    </defs>
+
+                    {/* Antenna */}
+                    <line x1="100" y1="32" x2="100" y2="14" stroke="#3a3a3a" strokeWidth="2" />
+                    <circle cx="100" cy="10" r="5" fill="url(#trn-eye)" filter="url(#trn-glow)">
+                      <animate attributeName="r" values="4;6;4" dur="1.6s" repeatCount="indefinite" />
+                    </circle>
+
+                    {/* Neck */}
+                    <rect x="86" y="146" width="28" height="14" rx="3" fill="#1a1a1a" stroke="#2a2a2a" />
+                    <line x1="92" y1="153" x2="108" y2="153" stroke="#e50914" strokeWidth="1" opacity="0.7" />
+
+                    {/* Head body */}
+                    <rect
+                      x="40"
+                      y="34"
+                      width="120"
+                      height="116"
+                      rx="22"
+                      fill="url(#trn-body)"
+                      stroke="#e50914"
+                      strokeWidth="1.5"
+                      strokeOpacity="0.55"
+                    />
+
+                    {/* Top vent details */}
+                    <rect x="60" y="44" width="80" height="3" rx="1.5" fill="#e50914" opacity="0.25" />
+                    <rect x="68" y="50" width="64" height="2" rx="1" fill="#e50914" opacity="0.18" />
+
+                    {/* Face plate */}
+                    <rect
+                      x="54"
+                      y="62"
+                      width="92"
+                      height="58"
+                      rx="14"
+                      fill="url(#trn-plate)"
+                      stroke="#e50914"
+                      strokeWidth="1"
+                      strokeOpacity="0.4"
+                    />
+
+                    {/* Scan line on face plate */}
+                    <line x1="54" y1="91" x2="146" y2="91" stroke="#e50914" strokeWidth="0.5" opacity="0.4">
+                      <animate
+                        attributeName="y1"
+                        values="68;114;68"
+                        dur="3s"
+                        repeatCount="indefinite"
+                      />
+                      <animate
+                        attributeName="y2"
+                        values="68;114;68"
+                        dur="3s"
+                        repeatCount="indefinite"
+                      />
+                    </line>
+
+                    {/* Eyes */}
+                    <g filter="url(#trn-glow)">
+                      <circle cx="78" cy="91" r="9" fill="url(#trn-eye)">
+                        <animate
+                          attributeName="opacity"
+                          values="1;0.55;1"
+                          dur="2.4s"
+                          repeatCount="indefinite"
+                        />
+                      </circle>
+                      <circle cx="122" cy="91" r="9" fill="url(#trn-eye)">
+                        <animate
+                          attributeName="opacity"
+                          values="1;0.55;1"
+                          dur="2.4s"
+                          repeatCount="indefinite"
+                          begin="0.3s"
+                        />
+                      </circle>
+                    </g>
+                    <circle cx="78" cy="91" r="2.4" fill="#fff" opacity="0.95" />
+                    <circle cx="122" cy="91" r="2.4" fill="#fff" opacity="0.95" />
+
+                    {/* Mouth — speaker grille */}
+                    <rect
+                      x="76"
+                      y="128"
+                      width="48"
+                      height="10"
+                      rx="3"
+                      fill="#0a0a0a"
+                      stroke="#e50914"
+                      strokeWidth="0.8"
+                      strokeOpacity="0.5"
+                    />
+                    {[0, 1, 2, 3, 4].map((i) => (
+                      <rect
+                        key={i}
+                        x={80 + i * 9}
+                        y="131"
+                        width="5"
+                        height="4"
+                        fill="#e50914"
+                        opacity="0.55"
                       >
-                        <span className="text-trn-text-muted">{k}</span>
-                        <span className={cls}>{v}</span>
-                      </div>
+                        <animate
+                          attributeName="opacity"
+                          values="0.25;0.75;0.25"
+                          dur="1.4s"
+                          begin={`${i * 0.15}s`}
+                          repeatCount="indefinite"
+                        />
+                      </rect>
                     ))}
-                  </div>
 
-                  <div className="rounded-xl border border-trn-red/40 bg-trn-red/10 p-4">
-                    <p className="font-mono text-xs text-trn-text-secondary">
-                      <span className="text-trn-red">$</span> trn deploy autonomous_warehouse_v2
-                      --target=client-03
-                    </p>
-                    <p className="mt-2 font-mono text-xs text-white">
-                      ✓ 8 units shipped · pilot signed · series A closing
-                    </p>
-                  </div>
-                </div>
+                    {/* Side bolts */}
+                    <circle cx="46" cy="92" r="3" fill="#1a1a1a" stroke="#e50914" strokeOpacity="0.5" />
+                    <circle cx="154" cy="92" r="3" fill="#1a1a1a" stroke="#e50914" strokeOpacity="0.5" />
+
+                    {/* Chest panel */}
+                    <rect
+                      x="62"
+                      y="166"
+                      width="76"
+                      height="44"
+                      rx="8"
+                      fill="url(#trn-body)"
+                      stroke="#e50914"
+                      strokeOpacity="0.4"
+                    />
+                    <circle cx="100" cy="188" r="9" fill="#0a0a0a" stroke="#e50914" strokeOpacity="0.7" />
+                    <circle cx="100" cy="188" r="4" fill="#e50914">
+                      <animate
+                        attributeName="opacity"
+                        values="0.4;1;0.4"
+                        dur="1.8s"
+                        repeatCount="indefinite"
+                      />
+                    </circle>
+                  </svg>
+                </motion.div>
+
+                {/* Floating data tags */}
+                <motion.div
+                  animate={{ y: [0, -8, 0] }}
+                  transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+                  className="absolute left-0 top-[18%] rounded-lg border border-trn-red/40 bg-trn-bg/80 px-3 py-2 font-mono text-[11px] text-trn-text shadow-red-glow backdrop-blur"
+                >
+                  <span className="text-trn-red">●</span> First Launch Program
+                </motion.div>
+                <motion.div
+                  animate={{ y: [0, 8, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
+                  className="absolute right-0 top-[42%] rounded-lg border border-trn-red/40 bg-trn-bg/80 px-3 py-2 font-mono text-[11px] text-trn-text shadow-red-glow backdrop-blur"
+                >
+                  <span className="text-trn-red">●</span> 3rd Axis Program
+                </motion.div>
+                <motion.div
+                  animate={{ y: [0, -6, 0] }}
+                  transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
+                  className="absolute bottom-[10%] left-[8%] rounded-lg border border-trn-red/40 bg-trn-bg/80 px-3 py-2 font-mono text-[11px] text-trn-text shadow-red-glow backdrop-blur"
+                >
+                  <span className="text-trn-red">●</span> CTO Lift-Off
+                </motion.div>
               </div>
             </motion.div>
           </ParallaxSection>
