@@ -47,11 +47,14 @@ const contactInfo = [
 
 const initialForm = { name: '', email: '', subject: '', message: '' };
 
+const CONTACT_ENDPOINT = `${import.meta.env.VITE_API_BASE_URL}/contact`;
+
 export default function Contact() {
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState('');
 
   const validate = () => {
     const e = {};
@@ -75,11 +78,31 @@ export default function Contact() {
     const e = validate();
     setErrors(e);
     if (Object.keys(e).length > 0) return;
+
     setSending(true);
-    await new Promise((r) => setTimeout(r, 800));
-    setSending(false);
-    setSent(true);
-    setForm(initialForm);
+    setSendError('');
+    try {
+      const res = await fetch(CONTACT_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name.trim(),
+          email: form.email.trim(),
+          subject: form.subject.trim(),
+          message: form.message.trim(),
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data?.success) {
+        throw new Error(data?.error || 'Failed to send. Please try again.');
+      }
+      setSent(true);
+      setForm(initialForm);
+    } catch (err) {
+      setSendError(err?.message || 'Failed to send. Please try again.');
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -259,6 +282,15 @@ export default function Contact() {
                       </span>
                     )}
                   </div>
+
+                  {sendError && (
+                    <div
+                      role="alert"
+                      className="rounded-xl border border-trn-red/40 bg-trn-red/10 px-4 py-3 text-sm text-trn-red"
+                    >
+                      {sendError}
+                    </div>
+                  )}
 
                   <button
                     type="submit"

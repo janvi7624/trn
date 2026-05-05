@@ -64,11 +64,14 @@ function StyledSelect({ value, onChange, children }) {
   );
 }
 
+const REGISTER_ENDPOINT = `${import.meta.env.VITE_API_BASE_URL}/register`;
+
 export default function Register() {
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const validate = () => {
     const e = {};
@@ -100,11 +103,32 @@ export default function Register() {
     if (Object.keys(e).length > 0) return;
 
     setSubmitting(true);
-    // Simulate async submission — replace with real API call
-    await new Promise((r) => setTimeout(r, 900));
-    setSubmitting(false);
-    setSubmitted(true);
-    setForm(initialForm);
+    setSubmitError('');
+    try {
+      const res = await fetch(REGISTER_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: form.fullName.trim(),
+          email: form.email.trim(),
+          phone: form.phone.trim(),
+          ventureName: form.ventureName.trim(),
+          program: form.program,
+          focusArea: form.focusArea,
+          message: form.message.trim(),
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data?.success) {
+        throw new Error(data?.error || 'Failed to submit. Please try again.');
+      }
+      setSubmitted(true);
+      setForm(initialForm);
+    } catch (err) {
+      setSubmitError(err?.message || 'Failed to submit. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const dropdownOptionClass = 'bg-trn-card text-trn-text';
@@ -258,6 +282,15 @@ export default function Register() {
                       className="input-field resize-none"
                     />
                   </Field>
+
+                  {submitError && (
+                    <div
+                      role="alert"
+                      className="rounded-xl border border-trn-red/40 bg-trn-red/10 px-4 py-3 text-sm text-trn-red"
+                    >
+                      {submitError}
+                    </div>
+                  )}
 
                   <button
                     type="submit"
